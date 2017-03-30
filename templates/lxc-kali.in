@@ -358,9 +358,10 @@ sudo
 
     # download a mini Kali into a cache
     echo "Downloading Kali minimal ..."
-    if [ "$interpreter" = "" ] ; then
-        debootstrap --verbose --variant=minbase --arch="$arch" \
-            --include=$packages --keyring="${releasekeyring}" \
+    if [ -n "$(which qemu-debootstrap)" ]; then
+        echo "Qemu-deboostrap"
+        qemu-debootstrap --verbose --variant=minbase --arch="$arch" \
+            --include=$packages \
             "$RELEASE" "$cache/partial-$RELEASE-$arch" "$MIRROR" /usr/share/debootstrap/scripts/kali-rolling
         if [ $? -ne 0 ]; then
             echo "Failed to download the rootfs, aborting."
